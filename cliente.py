@@ -34,7 +34,7 @@ class Cliente:
 
 		msg3 = con.recv(1024)
 
-		con.close()
+		con.close() 
 
 		return msg3
 

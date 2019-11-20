@@ -46,7 +46,7 @@ class Midd:
 
 	def connectServidorNome(self, funcao):
 		#if funcao in self.cache:
-		##self.connectServer(funcao)
+		#self.connectServer(funcao)
 		#else:
 		try:
 			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
