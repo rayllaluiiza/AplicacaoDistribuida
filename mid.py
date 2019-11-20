@@ -3,6 +3,9 @@ import threading
 import time
 import sys
 
+ADDRESS = "127.0.0.1"
+#PORT = "5000"
+
 MIDD_ADDRESS = "127.0.0.1"
 MIDD_PORT = 5000
 CLIENT_PORT = 5001
@@ -16,7 +19,7 @@ class Midd:
 
 	def __init__(self):
 		self.tcp_socket = None
-		self.server = ""
+		self.function = ""
 		self.valor1 = ""
 		self.valor2 = ""
 		self.cache = []
@@ -35,7 +38,7 @@ class Midd:
 	def nomes(self, connection, client):
 		msg = connection.recv(20)
 		msg = msg.split(" ")
-		self.server = msg[0]
+		self.function = msg[0]
 		self.valor1 = msg[1]
 		self.valor2 = msg[2]
 		connection.close()
@@ -69,14 +72,29 @@ class Midd:
 		self.connectServer(teste)
 
 	def connectServer(self, endereco):
-		mensagem = self.server +" " +self.valor1 +" " +self.valor2
+		kk = 'Soma'
+		mensagem = self.function +" " +self.valor1 +" " +self.valor2
+		endereco = endereco.split(" ")
+		print endereco
 
+		for i in range(len(endereco)):
+			self.cache.append({self.function: endereco[i]})
+
+		print self.cache
+
+		if kk in self.cache[0]:
+			print 'ola'
+		else:
+			print 'ola 2'
+		
+		'''
 		try:
 			print 'testandoo ...'
 			tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			tcp_socket.settimeout(1)
-			tcp_socket.connect((endereco, SERVER_PORT))
+			#tcp_socket.connect((endereco, SERVER_PORT))
+			tcp_socket.connect((ADDRESS, int(endereco)))
 			tcp_socket.send(mensagem)
 			msgCliente = tcp_socket.recv(1024)
 			tcp_socket.close()
@@ -86,7 +104,7 @@ class Midd:
 			msgCliente =""
 
 		self.connectCliente(msgCliente)
-
+		'''
 	def connectCliente(self, msgCliente):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

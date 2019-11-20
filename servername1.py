@@ -8,7 +8,7 @@ CLIENT_ADRESS = "127.0.0.1"
 SERVERNAME1_PORT = 5002
 SERVERNAME2_PORT = 5003
 SERVER_ADRESS = "127.0.0.1"
-SERVER_PORT = 5004
+SERVER_PORT1 = 5004
 
 class ServerName1():
 
@@ -16,8 +16,8 @@ class ServerName1():
 		self.retornaServer(MIDD_ADDRESS, SERVERNAME1_PORT)
 
 	def retornaServer(self, client, port):
-		vetorSoma = [{'funcao': 'Soma', 'host': '127.0.0.1'},{'funcao': 'Soma', 'host': '127.0.0.1'}]
-		endereco = '127.0.0.1'
+		endSoma = '5004' + ' ' +'5005' #quando testar no if mudar o address
+		endSoma2 = 'Soma' +' ' +'127.0.0.1' + ' ' +'127.0.0.1'
 		
 		udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -31,7 +31,7 @@ class ServerName1():
 			if msg == 'Soma':
 				print 'teste'
 				
-				udp_socket.sendto(endereco, cli)
+				udp_socket.sendto(endSoma, cli)
 
 		udp_socket.close()
 

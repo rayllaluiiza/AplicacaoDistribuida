@@ -45,7 +45,6 @@ if __name__ == "__main__":
 	opcao = 's'
 	
 	while opcao != 'n':
-		print opcao
 		msg = cliente.obterResultado()
 
 		if len(msg) == 0:
