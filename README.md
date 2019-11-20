@@ -1,2 +1,2 @@
 # Aplicação Distribuída
-É uma aplicação distribuída tolerante a falhas e completamente transparente para o usuário.
+É uma aplicação tolerante a falhas e completamente transparente para o usuário.
