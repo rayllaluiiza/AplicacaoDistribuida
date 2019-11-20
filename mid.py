@@ -76,7 +76,6 @@ class Midd:
 	def connectServer(self, endereco):
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
 		endereco = endereco.split(" ")
-		print endereco
 
 		op = 's'
 
@@ -87,7 +86,7 @@ class Midd:
 					print 'testandoo ...'
 					tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 					tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-					tcp_socket.settimeout(10)
+					tcp_socket.settimeout(5)
 					#tcp_socket.connect((endereco, SERVER_PORT))
 					tcp_socket.connect((ADDRESS, int(endereco[i])))
 					tcp_socket.send(mensagem)
