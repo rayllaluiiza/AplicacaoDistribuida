@@ -42,9 +42,9 @@ class Midd:
 		self.valor1 = msg[1]
 		self.valor2 = msg[2]
 		connection.close()
-		self.connectServidorNome(msg[0])
+		self.connectServidorNome()
 
-	def connectServidorNome(self, funcao):
+	def connectServidorNome(self):
 		#if funcao in self.cache:
 		#self.connectServer(funcao)
 		#else:
@@ -53,7 +53,7 @@ class Midd:
 			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			address = (MIDD_ADDRESS, SERVERNAME1_PORT)
-			udp_socket.sendto(str(funcao), address)
+			udp_socket.sendto(str(self.function), address)
 			print "entrei aqui 1"
 			udp_socket.settimeout(1)
 			endereco, cli = udp_socket.recvfrom(1024)
@@ -64,7 +64,7 @@ class Midd:
 			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
-			udp_socket.sendto(str(funcao), adress)
+			udp_socket.sendto(str(self.function), adress)
 			print "entrei aqui 6"
 			end, client = udp_socket.recvfrom(1024)
 			print end
@@ -74,7 +74,6 @@ class Midd:
 		self.connectServer(teste)
 
 	def connectServer(self, endereco):
-		kk = 'Soma'
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
 		endereco = endereco.split(" ")
 		print endereco

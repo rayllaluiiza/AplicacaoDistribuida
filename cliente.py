@@ -32,11 +32,11 @@ class Cliente:
 
 		con, cliente = tcp_socket.accept()
 
-		msg3 = con.recv(1024)
+		msg = con.recv(1024)
 
 		con.close() 
 
-		return msg3
+		return msg
 
 if __name__ == "__main__":
 
