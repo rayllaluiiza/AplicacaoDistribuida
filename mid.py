@@ -48,12 +48,14 @@ class Midd:
 		#if funcao in self.cache:
 		#self.connectServer(funcao)
 		#else:
+		
 		try:
 			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 			address = (MIDD_ADDRESS, SERVERNAME1_PORT)
 			udp_socket.sendto(str(funcao), address)
 			print "entrei aqui 1"
+			udp_socket.settimeout(1)
 			endereco, cli = udp_socket.recvfrom(1024)
 			print endereco
 			udp_socket.close()
@@ -86,7 +88,7 @@ class Midd:
 					print 'testandoo ...'
 					tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 					tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-					tcp_socket.settimeout(1)
+					tcp_socket.settimeout(10)
 					#tcp_socket.connect((endereco, SERVER_PORT))
 					tcp_socket.connect((ADDRESS, int(endereco[i])))
 					tcp_socket.send(mensagem)
