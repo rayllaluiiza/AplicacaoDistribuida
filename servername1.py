@@ -16,7 +16,7 @@ class ServerName1():
 		self.retornaServer(MIDD_ADDRESS, SERVERNAME1_PORT)
 
 	def retornaServer(self, client, port):
-		endSoma = '5004' + ' ' +'5005' #quando testar no if mudar o address
+		endSoma = '5005' + ' ' +'5004' #quando testar no if mudar o address
 		endSoma2 = '127.0.0.1' + ' ' +'127.0.0.1'
 		
 		udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

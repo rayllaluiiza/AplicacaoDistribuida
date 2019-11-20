@@ -77,34 +77,29 @@ class Midd:
 		endereco = endereco.split(" ")
 		print endereco
 
-		for i in range(len(endereco)):
-			self.cache.append({self.function: endereco[i]})
+		op = 's'
 
-		print self.cache
+		while op != 'n':
+			for i in range(len(endereco)):
+				
+				try:
+					print 'testandoo ...'
+					tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+					tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+					tcp_socket.settimeout(1)
+					#tcp_socket.connect((endereco, SERVER_PORT))
+					tcp_socket.connect((ADDRESS, int(endereco[i])))
+					tcp_socket.send(mensagem)
+					msgCliente = tcp_socket.recv(1024)
+					tcp_socket.close()
+					op = 'n'
 
-		if kk in self.cache[0]:
-			print 'ola'
-		else:
-			print 'ola 2'
-		
-		'''
-		try:
-			print 'testandoo ...'
-			tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			tcp_socket.settimeout(1)
-			#tcp_socket.connect((endereco, SERVER_PORT))
-			tcp_socket.connect((ADDRESS, int(endereco)))
-			tcp_socket.send(mensagem)
-			msgCliente = tcp_socket.recv(1024)
-			tcp_socket.close()
-
-		except socket.timeout:
-			print 'teste 6'
-			msgCliente =""
+				except:
+					print 'teste 6'
+					msgCliente =""
 
 		self.connectCliente(msgCliente)
-		'''
+		
 	def connectCliente(self, msgCliente):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
