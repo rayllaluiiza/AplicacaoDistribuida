@@ -22,7 +22,7 @@ class Midd:
 		self.function = ""
 		self.valor1 = ""
 		self.valor2 = ""
-		self.cache = []
+		self.cache = {}
     		tc = threading.Thread(target=self.start)
     		tc.start()
 
@@ -45,36 +45,49 @@ class Midd:
 		self.connectServidorNome()
 
 	def connectServidorNome(self):
-		#if funcao in self.cache:
-		#self.connectServer(funcao)
-		#else:
-		
-		try:
-			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			address = (MIDD_ADDRESS, SERVERNAME1_PORT)
-			udp_socket.sendto(str(self.function), address)
-			print "entrei aqui 1"
-			udp_socket.settimeout(1)
-			endereco, cli = udp_socket.recvfrom(1024)
-			print endereco
-			udp_socket.close()
-			teste = endereco
-		except:
-			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
-			udp_socket.sendto(str(self.function), adress)
-			print "entrei aqui 6"
-			end, client = udp_socket.recvfrom(1024)
-			print end
-			udp_socket.close()
-			teste = end
+		if self.function in self.cache:
+			print 'entrei no if do dicionario'
+			self.connectServer(self.cache[self.function])
 
-		self.connectServer(teste)
+		else:
+		
+			try:
+				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+				address = (MIDD_ADDRESS, SERVERNAME1_PORT)
+				udp_socket.sendto(str(self.function), address)
+				print "entrei aqui 1"
+				udp_socket.settimeout(1)
+				endereco, cli = udp_socket.recvfrom(1024)
+				print endereco
+				udp_socket.close()
+				teste = endereco
+			except:
+				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+				adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
+				udp_socket.sendto(str(self.function), adress)
+				print "entrei aqui 6"
+				end, client = udp_socket.recvfrom(1024)
+				print end
+				udp_socket.close()
+				teste = end
+
+			if self.function in self.cache:
+				if self.cache[self.function] != teste:
+					self.cache.update({self.function: teste})
+
+				else:
+					pass
+
+			else:
+				self.cache.update({self.function: teste})
+
+			self.connectServer(teste)
 
 	def connectServer(self, endereco):
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
+		self.cache = {self.function: endereco}
 		endereco = endereco.split(" ")
 
 		op = 's'
