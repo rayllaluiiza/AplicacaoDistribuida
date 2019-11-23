@@ -36,7 +36,7 @@ class Midd:
 			tc2.start()
 	
 	def nomes(self, connection, client):
-		msg = connection.recv(20)
+		msg = connection.recv(1024)
 		msg = msg.split(" ")
 		self.function = msg[0]
 		self.valor1 = msg[1]
@@ -61,7 +61,7 @@ class Midd:
 				endereco, cli = udp_socket.recvfrom(1024)
 				print endereco
 				udp_socket.close()
-				teste = endereco
+				enderecos = endereco
 			except:
 				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -71,19 +71,19 @@ class Midd:
 				end, client = udp_socket.recvfrom(1024)
 				print end
 				udp_socket.close()
-				teste = end
+				enderecos = end
 
 			if self.function in self.cache:
-				if self.cache[self.function] != teste:
-					self.cache.update({self.function: teste})
+				if self.cache[self.function] != enderecos:
+					self.cache.update({self.function: enderecos})
 
 				else:
 					pass
 
 			else:
-				self.cache.update({self.function: teste})
+				self.cache.update({self.function: enderecos})
 
-			self.connectServer(teste)
+			self.connectServer(enderecos)
 
 	def connectServer(self, endereco):
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
