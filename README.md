@@ -3,4 +3,4 @@
 
 - descompactar a pasta aplicacaodistribuida-master.zip
 - executar nessa sequência: mid.py, servername1.py e/ou servername2.py, server.py e cliente.py
-- irá usar apenas o cliente.py para interagir com o sistema 
+- apenas o cliente.py será usado para interagir com o sistema 
