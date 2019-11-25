@@ -1,6 +1,13 @@
 import socket
 import threading
 
+#PORT = "5000"
+#ADDRESS_MID = ""
+#ADDRESS_CLIENT = ""
+#ADDRESS_SEVERNAME1 = ""
+#ADDRESS_SEVERNAME2 = ""
+#ADRESS_SERVER = ""
+
 MIDD_ADDRESS = "127.0.0.1"
 MIDD_PORT = 5000
 CLIENT_PORT = 5001
@@ -14,6 +21,7 @@ class ServerName2():
 
 	def __init__(self):
 		self.retornaServer(MIDD_ADDRESS, SERVERNAME2_PORT)
+		#self.retornaServer(ADDRESS_MID, PORT)
 
 	def retornaServer(self, client, port):
 		endSoma = '5005' + ' ' +'5004' #quando testar no if mudar o address

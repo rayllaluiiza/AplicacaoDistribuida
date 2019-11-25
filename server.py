@@ -1,6 +1,13 @@
 import socket
 import threading
 
+#PORT = "5000"
+#ADDRESS_MID = ""
+#ADDRESS_CLIENT = ""
+#ADDRESS_SEVERNAME1 = ""
+#ADDRESS_SEVERNAME2 = ""
+#ADRESS_SERVER = ""
+
 MIDD_ADDRESS = "127.0.0.1"
 MIDD_PORT = 5000
 CLIENT_PORT = 5001
@@ -19,6 +26,7 @@ class Server():
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		tcp_socket.bind((SERVER_ADDRESS, SERVER_PORT))
+		#tcp_socket.connect((ADRESS_SERVER, PORT))
 		tcp_socket.listen(5) 
 		while True:
 			tc2 = threading.Thread(target=self.retornaValor, args=(tcp_socket.accept()))
