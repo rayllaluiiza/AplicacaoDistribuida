@@ -28,7 +28,7 @@ class Midd:
 		self.function = ""
 		self.valor1 = ""
 		self.valor2 = ""
-		self.cache = {"Soma": '00:14;5004 5005'}
+		self.cache = {}
     		tc = threading.Thread(target=self.start)
     		tc.start()
 
@@ -55,8 +55,7 @@ class Midd:
 	def trataCache(self):
 		hora = datetime.now()
 		atual = hora.strftime('%H:%M')
-		endereco_cache = self.cache[self.function].split(";")
-		#or endereco_cache[0].split(":")[0] == 00
+		'''
 		if int(atual.split(":")[0]) == 00:
 			total_atual = int(atual.split(":")[1]) + 24*60
 
@@ -65,23 +64,29 @@ class Midd:
 		else:
 			total_atual = int(atual.split(":")[1]) + int(atual.split(":")[0])*60
 			total_cache = int(endereco_cache[0].split(":")[1]) + int(endereco_cache[0].split(":")[0])*60
-	
-		print int(atual.split(":")[1]) + valor*60
-		print int(endereco_cache[0].split(":")[1]) + 24*60
 		'''
 		if self.function in self.cache:
+			endereco_cache = self.cache[self.function].split(";")
 
-			if (int(endereco_cache[0].split(":")[1]) - int(atual.split(":")[1])) > 5:
+			total_atual = int(atual.split(":")[1]) + int(atual.split(":")[0])*60
+			total_cache = int(endereco_cache[0].split(":")[1]) + int(endereco_cache[0].split(":")[0])*60
+
+			if (total_atual - total_cache) > 5:
 				print 'e maior que 5'
-				del(self.cache[self.function])
+				#del(self.cache[self.function])
 				self.connectServidorNome()
 
 			else:
 				print 'entrei no if do dicionario'
-				#self.connectServer(endereco_cache[1])
-		'''		
+				self.connectServer(endereco_cache[1])
+		else:
+			self.connectServidorNome()
+				
 
 	def connectServidorNome(self):
+		hora = datetime.now()
+		atual = hora.strftime('%H:%M')
+
 		try:
 			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -113,14 +118,8 @@ class Midd:
 				msgCliente = ""
 				self.connectCliente(msgCliente)
 
-		if self.function in self.cache:
-			if self.cache[self.function] != enderecos:
-				self.cache.update({self.function: enderecos})
-
-		else:
-			self.cache.update({self.function: enderecos})
-
 		if enderecos != "":
+			self.cache.update({self.function: atual+';'+enderecos})
 			self.connectServer(enderecos)
 		
 
@@ -130,7 +129,7 @@ class Midd:
 		print 'entrei no server name'
 		print endereco
 
-		'''
+		
 		op = 's'
 		contador = 0
 
@@ -154,7 +153,7 @@ class Midd:
 					msgCliente =""
 
 		self.connectCliente(msgCliente)
-		'''
+		
 	def connectCliente(self, msgCliente):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
