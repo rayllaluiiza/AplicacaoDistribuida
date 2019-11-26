@@ -49,7 +49,6 @@ class Midd:
 		self.valor1 = msg[1]
 		self.valor2 = msg[2]
 		connection.close()
-		#self.connectServidorNome()
 		self.trataCache()
 
 	def trataCache(self):
@@ -73,7 +72,7 @@ class Midd:
 
 			if (total_atual - total_cache) > 5:
 				print 'e maior que 5'
-				#del(self.cache[self.function])
+				del(self.cache[self.function])
 				self.connectServidorNome()
 
 			else:
@@ -127,14 +126,12 @@ class Midd:
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
 		endereco = endereco.split(" ")
 		print 'entrei no server name'
-		print endereco
-
 		
 		op = 's'
 		contador = 0
 
 		while op != 'n':
-			for i in range(len(endereco)):
+			for i in range(0,2):
 				
 				try:
 					print 'testandoo ...'
@@ -142,15 +139,21 @@ class Midd:
 					tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 					tcp_socket.settimeout(5)
 					#tcp_socket.connect((endereco, PORT))
-					tcp_socket.connect((ADDRESS, int(endereco[i])))
+					tcp_socket.connect((ADDRESS, int(endereco[contador])))
 					tcp_socket.send(mensagem)
 					msgCliente = tcp_socket.recv(1024)
 					tcp_socket.close()
 					op = 'n'
+					break
 
 				except:
-					print 'teste 6'
-					msgCliente =""
+					pass
+
+			if contador >= len(endereco):
+				msgCliente = ""
+				op = 'n'
+
+			contador = contador + 1
 
 		self.connectCliente(msgCliente)
 		

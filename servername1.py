@@ -41,6 +41,11 @@ class ServerName1():
 				
 				udp_socket.sendto(endSoma, cli)
 
+			elif msg == 'Subtracao':
+				print 'teste 2'
+				
+				udp_socket.sendto(endSoma, cli)
+
 		udp_socket.close()
 
 
