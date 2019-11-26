@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+from datetime import datetime
 import sys
 
 ADDRESS = "127.0.0.1"
@@ -27,7 +28,7 @@ class Midd:
 		self.function = ""
 		self.valor1 = ""
 		self.valor2 = ""
-		self.cache = {}
+		self.cache = {"Soma": '00:14;5004 5005'}
     		tc = threading.Thread(target=self.start)
     		tc.start()
 
@@ -48,54 +49,90 @@ class Midd:
 		self.valor1 = msg[1]
 		self.valor2 = msg[2]
 		connection.close()
-		self.connectServidorNome()
+		#self.connectServidorNome()
+		self.trataCache()
+
+	def trataCache(self):
+		hora = datetime.now()
+		atual = hora.strftime('%H:%M')
+		endereco_cache = self.cache[self.function].split(";")
+		#or endereco_cache[0].split(":")[0] == 00
+		if int(atual.split(":")[0]) == 00:
+			total_atual = int(atual.split(":")[1]) + 24*60
+
+		if int(endereco_cache[0].split(":")[0]) == 00:
+			total_cache = int(endereco_cache[0].split(":")[1]) + 24*60
+		else:
+			total_atual = int(atual.split(":")[1]) + int(atual.split(":")[0])*60
+			total_cache = int(endereco_cache[0].split(":")[1]) + int(endereco_cache[0].split(":")[0])*60
+	
+		print int(atual.split(":")[1]) + valor*60
+		print int(endereco_cache[0].split(":")[1]) + 24*60
+		'''
+		if self.function in self.cache:
+
+			if (int(endereco_cache[0].split(":")[1]) - int(atual.split(":")[1])) > 5:
+				print 'e maior que 5'
+				del(self.cache[self.function])
+				self.connectServidorNome()
+
+			else:
+				print 'entrei no if do dicionario'
+				#self.connectServer(endereco_cache[1])
+		'''		
 
 	def connectServidorNome(self):
-		if self.function in self.cache:
-			print 'entrei no if do dicionario'
-			self.connectServer(self.cache[self.function])
-
-		else:
-		
+		try:
+			udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+			address = (MIDD_ADDRESS, SERVERNAME1_PORT)
+			#address = ((ADRESS_MID, PORT))
+			udp_socket.sendto(str(self.function), address)
+			print "entrei aqui 1"
+			udp_socket.settimeout(1)
+			endereco, cli = udp_socket.recvfrom(1024)
+			print endereco
+			udp_socket.close()
+			enderecos = endereco
+		except:
 			try:
-				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-				address = (MIDD_ADDRESS, SERVERNAME1_PORT)
-				#address = ((ADRESS_MID, PORT))
-				udp_socket.sendto(str(self.function), address)
-				print "entrei aqui 1"
-				udp_socket.settimeout(1)
-				endereco, cli = udp_socket.recvfrom(1024)
-				print endereco
-				udp_socket.close()
-				enderecos = endereco
-			except:
 				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 				adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
 				#adress = ((ADRESS_MID, PORT))
 				udp_socket.sendto(str(self.function), adress)
 				print "entrei aqui 6"
+				udp_socket.settimeout(1)
 				end, client = udp_socket.recvfrom(1024)
 				print end
 				udp_socket.close()
 				enderecos = end
 
-			if self.function in self.cache:
-				if self.cache[self.function] != enderecos:
-					self.cache.update({self.function: enderecos})
+			except:
+				enderecos = ""
+				msgCliente = ""
+				self.connectCliente(msgCliente)
 
-			else:
+		if self.function in self.cache:
+			if self.cache[self.function] != enderecos:
 				self.cache.update({self.function: enderecos})
 
+		else:
+			self.cache.update({self.function: enderecos})
+
+		if enderecos != "":
 			self.connectServer(enderecos)
+		
 
 	def connectServer(self, endereco):
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
-		self.cache = {self.function: endereco}
 		endereco = endereco.split(" ")
+		print 'entrei no server name'
+		print endereco
 
+		'''
 		op = 's'
+		contador = 0
 
 		while op != 'n':
 			for i in range(len(endereco)):
@@ -117,7 +154,7 @@ class Midd:
 					msgCliente =""
 
 		self.connectCliente(msgCliente)
-		
+		'''
 	def connectCliente(self, msgCliente):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
