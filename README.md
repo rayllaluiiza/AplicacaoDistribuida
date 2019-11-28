@@ -1,5 +1,6 @@
 # Aplicação Distribuída
 É uma aplicação tolerante a falhas e completamente transparente para o usuário.
+
 Versão: Python 2
 
 Passos para executar a aplicação:
