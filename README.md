@@ -3,6 +3,7 @@
 É uma aplicação tolerante a falhas e completamente transparente para o usuário.
 
 Versão: Python 2
+
 Sistema Operacional: Linux
 
 Passos para executar a aplicação:
