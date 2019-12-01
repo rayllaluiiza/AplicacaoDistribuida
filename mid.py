@@ -5,25 +5,27 @@ from datetime import datetime
 import sys
 
 PORT = 5000
+ADDRESS = "127.0.0.1"
 ADDRESS_CLIENT = "10.90.37.15"
 ADDRESS_MID = "10.90.37.16"
 ADDRESS_SEVERNAME1 = "10.90.37.17"
 ADDRESS_SEVERNAME2 = "10.90.37.19"
 ADRESS_SERVER = "10.90.37.18"
 
-#MIDD_ADDRESS = "127.0.0.1"
-#MIDD_PORT = 5000
-#CLIENT_PORT = 5001
-#CLIENT_ADRESS = "127.0.0.1"
-#SERVERNAME1_PORT = 5002
-#SERVERNAME2_PORT = 5003
-#SERVER_ADRESS = "127.0.0.1"
-#SERVER_PORT = 5004
+MIDD_ADDRESS = "127.0.0.1"
+MIDD_PORT = 5000
+CLIENT_PORT = 5001
+CLIENT_ADRESS = "127.0.0.1"
+SERVERNAME1_PORT = 5002
+SERVERNAME2_PORT = 5003
+SERVER_ADRESS = "127.0.0.1"
+SERVER_PORT = 5004
 
 class Midd:
 
 	def __init__(self):
 		self.tcp_socket = None
+		self.cliente = ""
 		self.function = ""
 		self.valor1 = ""
 		self.valor2 = ""
@@ -34,8 +36,8 @@ class Midd:
 	def start(self):
 		self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		#self.tcp_socket.bind((MIDD_ADDRESS, PORT))
 		self.tcp_socket.bind((ADDRESS_MID, PORT))
-		#self.tcp_socket.connect((ADDRESS_MID, PORT))
 		self.tcp_socket.listen(5)
 		while True:
 			tc2 = threading.Thread(target=self.nomes, args=(self.tcp_socket.accept()))
@@ -44,11 +46,17 @@ class Midd:
 	def nomes(self, connection, client):
 		msg = connection.recv(1024)
 		msg = msg.split(" ")
+		self.cliente = client[0]
 		self.function = msg[0]
 		self.valor1 = msg[1]
 		self.valor2 = msg[2]
 		connection.close()
-		self.trataCache()
+
+		if self.function != "Soma" and self.function != "Subtracao" and self.function != "Multiplicacao":
+			msgCliente = ""
+			self.connectCliente(msgCliente)
+		else:	
+			self.trataCache()
 
 	def trataCache(self):
 		hora = datetime.now()
@@ -92,8 +100,8 @@ class Midd:
 			try:
 				udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 				udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-				adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
-				#adress = ((ADRESS_SERVERNAME2, PORT))
+				#adress = (MIDD_ADDRESS, SERVERNAME2_PORT)
+				adress = ((ADRESS_SERVERNAME2, PORT))
 				udp_socket.sendto(str(self.function), adress)
 				print "entrei aqui 6"
 				udp_socket.settimeout(1)
@@ -115,7 +123,7 @@ class Midd:
 	def connectServer(self, endereco):
 		mensagem = self.function +" " +self.valor1 +" " +self.valor2
 		endereco = endereco.split(" ")
-		
+		print endereco
 		op = 's'
 		contador = 0
 
@@ -147,10 +155,10 @@ class Midd:
 		self.connectCliente(msgCliente)
 		
 	def connectCliente(self, msgCliente):
+		print msgCliente
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#tcp_socket.connect((CLIENT_ADRESS, CLIENT_PORT))
-		tcp_socket.connect((ADDRESS_CLIENT, PORT))
+		tcp_socket.connect((str(self.cliente), PORT))
 		tcp_socket.send(msgCliente)
 		
 		tcp_socket.close()

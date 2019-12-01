@@ -16,7 +16,7 @@ class Server():
 	def conectar(self):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#tcp_socket.bind((SERVER_ADDRESS, SERVER_PORT))
+		#tcp_socket.bind((SERVER_ADRESS, SERVER_PORT))
 		tcp_socket.bind((ADRESS_SERVER, PORT))
 		tcp_socket.listen(5) 
 		while True:

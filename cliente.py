@@ -26,7 +26,7 @@ class Cliente:
 	def obterResultado(self):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#tcp_socket.bind((CLIENT_ADDRESS, CLIENT_PORT))
+		#tcp_socket.bind((CLIENT_ADRESS, CLIENT_PORT))
 		tcp_socket.bind((ADRESS_CLIENT, PORT))
 		tcp_socket.listen(5)
 

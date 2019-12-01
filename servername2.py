@@ -16,7 +16,7 @@ class ServerName1():
 
 	def retornaServer(self, client, port):
 		#endSoma = '5005' + ' ' +'5004' #quando testar no if mudar o address
-		endSoma2 = '10.90.37.18' + ' ' +'127.0.0.1'
+		endereco = '10.90.37.18' + ' ' +'127.0.0.1'
 		
 		udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -30,12 +30,17 @@ class ServerName1():
 			if msg == 'Soma':
 				print 'teste'
 				
-				udp_socket.sendto(endSoma2, cli)
+				udp_socket.sendto(endereco, cli)
 
 			elif msg == 'Subtracao':
 				print 'teste 2'
 				
-				udp_socket.sendto(endSoma2, cli)
+				udp_socket.sendto(endereco, cli)
+
+			elif msg == 'Multiplicacao':
+				print 'teste 3'
+
+				udp_socket.sendto(endereco, cli)
 
 		udp_socket.close()
 
