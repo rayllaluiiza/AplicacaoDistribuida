@@ -19,7 +19,6 @@ class Cliente:
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		tcp_socket.connect((server, port))
 		tcp_socket.send(mensagem)
-		print mensagem
 		tcp_socket.close()
 
 	def obterResultado(self):
