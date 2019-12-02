@@ -8,7 +8,7 @@ ADDRESS_SEVERNAME1 = "10.90.37.17"
 ADDRESS_SEVERNAME2 = "10.90.37.19"
 ADRESS_SERVER = "10.90.37.18"
 
-class ServerName1():
+class ServerName2():
 
 	def __init__(self):
 		self.retornaServer(ADDRESS_SEVERNAME2, PORT)
