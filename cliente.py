@@ -1,7 +1,7 @@
 import socket
 import threading
 
-PORT = "5000"
+PORT = 5000
 ADDRESS_CLIENT = "10.90.37.15"
 ADDRESS_MID = "10.90.37.16"
 ADDRESS_SEVERNAME1 = "10.90.37.17"
@@ -11,8 +11,7 @@ ADRESS_SERVER = "10.90.37.18"
 class Cliente:
 
 	def __init__(self):
-		#self.processar("Soma", '3', '2', MIDD_ADDRESS, MIDD_PORT)
-		self.processar("Soma", '3', '2', ADRESS_MID, PORT)
+		self.processar("Soma", '3', '2', ADDRESS_MID, PORT)
 
 	def processar(self, nome, valor1, valor2, server, port):
 		mensagem = nome + " " +valor1 +" " +valor2
@@ -26,8 +25,7 @@ class Cliente:
 	def obterResultado(self):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#tcp_socket.bind((CLIENT_ADRESS, CLIENT_PORT))
-		tcp_socket.bind((ADRESS_CLIENT, PORT))
+		tcp_socket.bind((ADDRESS_CLIENT, PORT))
 		tcp_socket.listen(5)
 
 		con, cliente = tcp_socket.accept()

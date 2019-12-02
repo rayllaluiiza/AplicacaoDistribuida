@@ -16,7 +16,6 @@ class Server():
 	def conectar(self):
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#tcp_socket.bind((SERVER_ADRESS, SERVER_PORT))
 		tcp_socket.bind((ADRESS_SERVER, PORT))
 		tcp_socket.listen(5) 
 		while True:
@@ -31,7 +30,6 @@ class Server():
 		dynamic_class = getattr(dynamic_module, nomeFuncao[0])
 		dynamic_function = getattr(dynamic_class(), "compute")
 		result = dynamic_function(int(nomeFuncao[1]), int(nomeFuncao[2]))
-		print result
 		connection.send(str(result))
 		connection.close()
 
